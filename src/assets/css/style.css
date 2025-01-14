@@ -1,0 +1,38 @@
+.cont-app {
+    max-width: 50%;
+    margin: auto;
+  }
+  
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+  
+  li .cont-content-task {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  li:first-child {
+    margin-top: 10px;
+  }
+  
+  /* priority styles */
+  
+  .task-item-tranqui {
+    background-color: #afe979;
+  }
+  
+  .task-item-medio {
+    background-color: #e7f78d;
+  }
+  
+  .task-item-urgente {
+    background-color: #e47070;
+  }

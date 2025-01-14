@@ -1,0 +1,21 @@
+<% tasks.forEach(function(task) { %>
+<li
+  id="task-id-<%= task._id %>"
+  class="task-item <% if (task.priority === 'tranqui') { %>task-item-tranqui<% } else if (task.priority === 'medio') { %>task-item-medio<% } else if (task.priority === 'urgente') { %>task-item-urgente<% } %>"
+>
+  <div class="task-content">
+    <input type="checkbox" id="task-<%= task._id %>" name="task-<%= task._id %>"
+    <%= task.done ? 'checked' : '' %>>
+    <label for="task-<%= task._id %>"><%= task.text %></label>
+  </div>
+  <button
+    class="delete-btn"
+    hx-delete="tasks/<%= task._id %>"
+    hx-target="#task-id-<%= task._id %>"
+    hx-swap="delete"
+  >
+    Delete
+  </button>
+</li>
+
+<% }); %>

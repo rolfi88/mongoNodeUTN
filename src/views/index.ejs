@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Todo App</title>
+  <!-- Bulma -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <!-- Boxicons -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+
+<body class="p-5">
+
+  <!-- Botones de Login y Registro -->
+  <div class="field is-grouped is-grouped-right mt-4">
+    <div class="control">
+      <button class="button is-primary" hx-trigger="click" hx-swap="none" onclick="document.getElementById('loginForm').style.display = document.getElementById('loginForm').style.display === 'none' ? 'block' : 'none';">Iniciar sesión</button>
+    </div>
+    <div class="control">
+      <button class="button is-link" hx-get="partials/register" hx-target="#mi-div" hx-swap="innerHTML">Registrar</button>
+    </div>
+    <div class="control">
+      <button class="button is-danger is-hidden" id="logoutBtn">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <div id="mi-div"></div>
+
+  <div class="box mt-4" id="loginForm" style="display: none;">
+    <h2 class="title is-5 has-text-centered">Iniciar sesión</h2>
+      <form id="loginFormContent" method="post" action='/api/users/login'>
+        <div class="field">
+          <label class="label">Correo electrónico</label>
+          <div class="control">
+            <input name="email" class="input" type="email" id="email" placeholder="Tu correo electrónico" required>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Contraseña</label>
+          <div class="control">
+            <input name="password" class="input" type="password" id="password" placeholder="Tu contraseña" required>
+          </div>
+        </div>
+        <div class="control">
+          <button class="button is-primary" type="submit">Iniciar sesión</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div class="cont-app p-5 box">
+    <h1 class="title has-text-centered">Voice Todo App</h1>
+    <h1 class="title has-text-centered is-6">Categoria: URGENTE, MEDIO, TRANQUI</h1>
+    <h4 class="title has-text-centered is-6 tasks-count-text has-text-primary"></h4>
+    <div class="box mt-3 mb-3">
+      <div class="field is-grouped">
+        <div class="control is-expanded">
+          <div class="select is-fullwidth">
+            <select 
+              name="status"
+              hx-get="/api/tasks/search" 
+              hx-push-url="true" 
+              hx-vals='{"status": this.value}' 
+              hx-target="#tasks-list">
+              <option value="all">Todas</option>
+              <option value="done">Realizadas</option>
+              <option value="pending">Pendientes</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Filtro por prioridad (urgente, medio, tranqui) -->
+        <div class="control is-expanded">
+          <div class="select is-fullwidth">
+            <select id="filter-priority">
+              <option value="all">Todas</option>
+              <option value="urgente">Urgente</option>
+              <option value="medio">Medio</option>
+              <option value="tranqui">Tranqui</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="button is-link is-fullwidth record-botton">🎙️ Grabar Tarea</button>
+  
+    <ul id="tasks-list" class="tasks-list" hx-get="/api/tasks/search" hx-trigger="load"></ul>
+
+
+  </div>
+
+  <script>
+    // Manejo de errores de HTMX
+    document.body.addEventListener("htmx:responseError", function (event) {
+      if (event.detail.xhr.status === 401) { // Código de estado 401: No autorizado
+        alert("Recurso privado. Agregue token.");
+      }
+    });
+  </script>
+
+  <script src="/assets/js/index.js"></script>
+</body>
+</html>
